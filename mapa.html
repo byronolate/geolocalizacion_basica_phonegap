@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GEO</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/jquery.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAnkxg5G4o8IwNOCCGRDURWRW51LYA406c&sensor=false&libraries=geometry&v=3.4"></script>
+    
+  
+    <script src="js/bootstrap.min.js"></script>
+
+</head>
+    <body onload="geolocate()">
+        <div class="embed-responsive embed-responsive-16by9">
+            <div id="map-canvas" class="embed-responsive-item"></div>
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript">
+    var map;
+
+function initialize() {
+
+    var mapOptions = {
+        center: new google.maps.LatLng(-33.4569400, -70.6482700),
+        scrollwheel: true,
+        zoom: 12//13
+
+    };
+
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+    // Create the DIV to hold the control and call the constructor passing in this DIV
+    var geolocationDiv = document.createElement('div');
+    var geolocationControl = new GeolocationControl(geolocationDiv, map);
+
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(geolocationDiv);
+}
+
+
+
+function geolocate() {
+
+    if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(function (position) {
+
+            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+            // Create a marker and center map on user location
+          var  marker = new google.maps.Marker({
+                position: pos,
+                draggable: true,
+                title:'Usted se encuentra aquí',
+                animation: google.maps.Animation.DROP,
+                map: map
+
+            });
+
+            //-----------------------------------------------------------------------------------//
+
+            // Create the shared infowindow with three DIV placeholders
+            // One for a text string, oned for the html content from the xml, one for the StreetView panorama.
+            var content = document.createElement("DIV");
+            var title = document.createElement("DIV");
+            content.appendChild(title);
+            var streetview = document.createElement("DIV");
+            streetview.style.width = "200px";
+            streetview.style.height = "200px";
+            content.appendChild(streetview);
+            var htmlContent = document.createElement("DIV");
+            content.appendChild(htmlContent);
+
+            var infowindow = new google.maps.InfoWindow({
+              size: new google.maps.Size(150, 50),
+              content: content
+            });
+
+            var panorama = null;
+            var pin = new google.maps.MVCObject();
+            google.maps.event.addListenerOnce(infowindow, "domready", function() {
+              panorama = new google.maps.StreetViewPanorama(streetview, {
+               navigationControl: false,
+               enableCloseButton: false,
+               addressControl: false,
+               linksControl: false,
+               visible: true
+              });
+              panorama.bindTo("position", pin);
+            });
+            
+            function openInfoWindow(marker) {
+           title.innerHTML = marker.getTitle();
+           pin.set("position", marker.getPosition());
+           infowindow.open(map, marker);
+            }
+
+            //---------------------------------------------------------//
+            
+
+
+            marker.addListener('click', function() {
+              infowindow.open(map, marker);
+            });
+
+            marker.addListener('click', toggleBounce);
+            map.setCenter(pos);
+        });
+
+
+
+
+
+          function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+              marker.setAnimation(null);
+            } else {
+              marker.setAnimation(google.maps.Animation.BOUNCE);
+            }
+          }
+   }
+}
+
+initialize();
+</script>
+
+<style type="text/css">
+#map-canvas{
+    height: 400px;
+}
+body {
+    margin:0;
+    padding:0;
+}
+</style>
+
+

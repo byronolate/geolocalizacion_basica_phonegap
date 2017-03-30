@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.phonegap.geolocalizacion" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>GEOLOCALIZACION</name>
+    <description>
+       GEOLOCALIZACION
+    </description>
+    <author email="byron.olate@gmail.com" href="#">
+        GEOLOCALIZACION
+    </author>
+
+    
+    <gap:splash src="icon.png" />
+
+    <preference name="splashscreen" value="splash" />
+    <preference name="splashScreenDelay" value="10000" />
+
+
+
+    <content src="index.html" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+
+    <access origin="http://... * "/> <!-- allow local pages -->
+    <access origin="http://..../" />
+    <access origin="http://....." subdomains="true" />
+    <access origin="*"/>
+
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+
+	
+
+    <gap:plugin name="org.apache.cordova.geolocation"  source="npm"/>
+
+</widget>

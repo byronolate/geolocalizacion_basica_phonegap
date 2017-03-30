@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>GEO</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/jquery.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC4Pta07pYlzbICVniGLYta4MLCrUrXrHE&sensor=false&libraries=geometry&v=3.4"></script>
+    
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+	<script src="js/bootstrap.min.js"></script>
+
+</head>
+<body>
+	<div align="center" style="margin-top: 10px;">
+    <input type="image" src="img/marker.png" width="210" height="210" data-toggle="modal" data-target="#myModalHorizontal">
+        <div style="margin-top: 5px;"></div>
+    <p>Pulsa el Marcador para Geolocalizarte</p>
+    </div>
+
+    <div class="modal fade" id="myModalHorizontal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header" align="center">
+                    <button type="button" class="close" data-dismiss="modal">
+                           <span aria-hidden="true">&times;</span>
+                           <span class="sr-only">Cerrar</span>
+                    </button>
+                    <h3>GEOLOCALIZACIÓN</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="google-maps">
+                         <iframe src="mapa.html"  frameborder="0"  allowfullscreen></iframe>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div id="map-canvas"></div>
+</body>
+</html>
+
+<script type="text/javascript">
+	var map;
+
+function initialize() {
+
+    var mapOptions = {
+        center: new google.maps.LatLng(-33.4569400, -70.6482700),
+        zoom: 14//13
+    };
+
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+    // Create the DIV to hold the control and call the constructor passing in this DIV
+    var geolocationDiv = document.createElement('div');
+    var geolocationControl = new GeolocationControl(geolocationDiv, map);
+
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(geolocationDiv);
+}
+
+
+
+
+initialize();
+</script>
+
+<style type="text/css">
+.google-maps {
+        position: relative;
+        padding-bottom: 75%; 
+        height: 0;
+        overflow: hidden;
+    }
+    .google-maps iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+body{
+    padding: 50px;
+}
+
+:focus {outline:none;}
+</style>
